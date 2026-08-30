@@ -1,0 +1,57 @@
+# Feature Engineering Techniques
+
+A hands-on study of **feature selection** techniques in scikit-learn, applied to the Breast Cancer Wisconsin dataset, with a focus on how the number and choice of features affects model performance.
+
+## Overview
+
+Feature engineering covers everything you do to a dataset's features before modeling:
+
+- **Feature Elimination** – dropping features
+- **Feature Addition** – adding new features
+- **Feature Transformation** – rescaling values (log, sqrt, etc.)
+- **Feature Selection** – picking the most important features for model building
+
+This notebook focuses on **Feature Selection**, comparing two scikit-learn approaches:
+
+- `SelectFromModel`
+- `RFE` (Recursive Feature Elimination)
+
+## Dataset
+
+[Breast Cancer Wisconsin dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset) from `sklearn.datasets.load_breast_cancer()` — 569 samples, 30 numeric features, binary target (malignant/benign).
+
+## Workflow
+
+1. **Import libraries** – pandas, scikit-learn (`RandomForestClassifier`, `GradientBoostingClassifier`, `SelectFromModel`, `RFE`)
+2. **Load & explore the dataset** – shape, dtypes, missing-value check
+3. **Train/test split** – 80/20, stratified
+4. **Baseline model** – `RandomForestClassifier` trained on all 30 features
+5. **Feature selection experiments**:
+   - `SelectFromModel` on the trained Random Forest, capped at 12 features
+   - `RFE` with a `RandomForestClassifier` estimator, 12 features
+   - `RFE` with a `GradientBoostingClassifier` estimator, 12 features
+   - A sweep of `RFE` (Gradient Boosting) across **1–30 features** to find the optimal count
+6. **Evaluation** – accuracy, precision, recall, and confusion matrix for each configuration
+
+## Key Findings
+
+- Reducing from 30 features to a well-chosen subset (~12–21) maintains or improves accuracy while cutting training time.
+- The feature-count sweep with `RFE` + `GradientBoostingClassifier` showed **21 features** gave the best accuracy (~96.5%), used as the optimal feature set for the final model.
+- `RFE` with a stronger estimator (Gradient Boosting) selected more informative features than `SelectFromModel` on a Random Forest.
+
+## Tech Stack
+
+- Python 3
+- pandas
+- scikit-learn (`RandomForestClassifier`, `GradientBoostingClassifier`, `SelectFromModel`, `RFE`)
+
+## Usage
+
+```bash
+pip install pandas scikit-learn
+jupyter notebook Feature_Engineering_Tecniques.ipynb
+```
+
+## File
+
+- `Feature_Engineering_Tecniques.ipynb` – full notebook with code, outputs, and analysis
